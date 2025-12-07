@@ -159,15 +159,15 @@ Based on plan.md structure:
 
 ### Tests for User Story 3
 
-- [ ] T053 [P] [US3] E2E test for resize functionality in extension/tests/e2e/resize-overlay.spec.ts (drag corners, verify bounds 200-800w, 100-600h)
+- [X] T053 [P] [US3] E2E test for resize functionality in extension/tests/e2e/resize-overlay.spec.ts (drag corners, verify bounds 200-800w, 100-600h)
 
 ### Implementation for User Story 3
 
-- [ ] T054 [US3] Add resize handles to TranslationOverlay component (corners + edges, CSS for resize cursors)
-- [ ] T055 [US3] Implement resize drag logic in TranslationOverlay (mouse/touch events, constrain to min/max bounds)
-- [ ] T056 [US3] Add display area state persistence in useTranslation hook (chrome.storage.local for session)
-- [ ] T057 [US3] Load persisted size on overlay mount in TranslationOverlay
-- [ ] T058 [US3] Add smooth resize animation (no lag/flickering, CSS transitions)
+- [X] T054 [US3] Add resize handles to TranslationOverlay component (corners + edges, CSS for resize cursors)
+- [X] T055 [US3] Implement resize drag logic in TranslationOverlay (mouse/touch events, constrain to min/max bounds)
+- [X] T056 [US3] Add display area state persistence in useTranslation hook (chrome.storage.local for session)
+- [X] T057 [US3] Load persisted size on overlay mount in TranslationOverlay
+- [X] T058 [US3] Add smooth resize animation (no lag/flickering, CSS transitions)
 
 **Checkpoint**: Users can customize translation overlay size.
 
@@ -183,15 +183,15 @@ Based on plan.md structure:
 
 ### Tests for User Story 4
 
-- [ ] T059 [P] [US4] E2E test for positioning functionality in extension/tests/e2e/position-overlay.spec.ts (drag to corners, verify fixed positioning on scroll)
+- [X] T059 [P] [US4] E2E test for positioning functionality in extension/tests/e2e/position-overlay.spec.ts (drag to corners, verify fixed positioning on scroll)
 
 ### Implementation for User Story 4
 
-- [ ] T060 [US4] Add draggable header to TranslationOverlay component (visual drag handle)
-- [ ] T061 [US4] Implement drag logic for repositioning in TranslationOverlay (mouse/touch events, constrain to viewport)
-- [ ] T062 [US4] Add position persistence in useTranslation hook (chrome.storage.local, save x/y coordinates)
-- [ ] T063 [US4] Load persisted position on overlay mount in TranslationOverlay
-- [ ] T064 [US4] Ensure fixed positioning CSS (overlay doesn't scroll with page)
+- [X] T060 [US4] Add draggable header to TranslationOverlay component (visual drag handle)
+- [X] T061 [US4] Implement drag logic for repositioning in TranslationOverlay (mouse/touch events, constrain to viewport)
+- [X] T062 [US4] Add position persistence in useTranslation hook (chrome.storage.local, save x/y coordinates)
+- [X] T063 [US4] Load persisted position on overlay mount in TranslationOverlay
+- [X] T064 [US4] Ensure fixed positioning CSS (overlay doesn't scroll with page)
 
 **Checkpoint**: Users can fully customize translation overlay position and size.
 
@@ -201,13 +201,13 @@ Based on plan.md structure:
 
 **Purpose**: Performance optimization, error handling hardening, production readiness
 
-- [ ] T065 [P] Run Webpack bundle analysis, ensure <500KB total bundle size (optimize React/Tailwind if needed)
-- [ ] T066 [P] Run latency benchmarks, ensure <500ms P50 latency (optimize audio chunking/WebSocket if needed)
+- [X] T065 [P] Run Webpack bundle analysis, ensure <500KB total bundle size (optimize React/Tailwind if needed)
+- [X] T066 [P] Run latency benchmarks, ensure <500ms P50 latency (optimize audio chunking/WebSocket if needed)
 - [ ] T067 [P] Test on low-end devices (4GB RAM minimum target), optimize memory footprint <50MB
 - [ ] T068 [P] Cross-browser testing (Chrome 90+, potential Firefox/Edge compatibility)
 - [ ] T069 [P] Manual QA on various websites (YouTube, news sites, social media) - verify 95% compatibility
 - [ ] T070 [P] Add comprehensive error logging (non-PII, track error rates for <5% ad failure target)
-- [ ] T071 [P] Create user documentation (README with setup instructions, troubleshooting guide)
+- [X] T071 [P] Create user documentation (README with setup instructions, troubleshooting guide)
 - [ ] T072 [P] Add development mode latency display (window.__babelFishLatency for debugging)
 - [ ] T073 Prepare Chrome Web Store submission materials (screenshots, description, privacy policy)
 

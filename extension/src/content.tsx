@@ -37,9 +37,12 @@ const TranslationApp: React.FC<{
     translationState,
     error,
     isReconnecting,
+    overlayPreferences,
     startTranslation,
     stopTranslation,
     sendAudioChunk,
+    updateOverlaySize,
+    updateOverlayPosition,
   } = useTranslation();
 
   const {
@@ -118,6 +121,12 @@ const TranslationApp: React.FC<{
         isVisible={isTranslating || isConnected}
         isFinal={translationState?.isFinal || false}
         onClose={handleClose}
+        initialWidth={overlayPreferences?.width}
+        initialHeight={overlayPreferences?.height}
+        initialX={overlayPreferences?.x}
+        initialY={overlayPreferences?.y}
+        onSizeChange={updateOverlaySize}
+        onPositionChange={updateOverlayPosition}
       />
 
       {/* T049: Ad Display positioned to not overlap translation overlay */}

@@ -16,18 +16,29 @@ interface TranslationState {
   confidence: number;
 }
 
+interface OverlayPreferences {
+  width: number;
+  height: number;
+  x: number;
+  y: number;
+}
+
 interface UseTranslationReturn {
   isConnected: boolean;
   isTranslating: boolean;
   translationState: TranslationState | null;
   error: string | null;
   isReconnecting: boolean;
+  overlayPreferences: OverlayPreferences | null;
   startTranslation: (sourceLanguage: Language, targetLanguage: Language) => Promise<void>;
   stopTranslation: () => void;
   sendAudioChunk: (chunk: ArrayBuffer, sequenceNumber: number, timestamp: number) => Promise<void>;
+  updateOverlaySize: (width: number, height: number) => void;
+  updateOverlayPosition: (x: number, y: number) => void;
 }
 
 const TRANSLATION_SERVER_URL = process.env.TRANSLATION_SERVER_URL || 'ws://localhost:8080/translate';
+const OVERLAY_PREFERENCES_KEY = 'overlayPreferences';
 
 export function useTranslation(): UseTranslationReturn {
   const [isConnected, setIsConnected] = useState(false);
@@ -35,6 +46,40 @@ export function useTranslation(): UseTranslationReturn {
   const [translationState, setTranslationState] = useState<TranslationState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isReconnecting, setIsReconnecting] = useState(false);
+  const [overlayPreferences, setOverlayPreferences] = useState<OverlayPreferences | null>(null);
+
+  /**
+   * Load overlay preferences from storage (T057, T063)
+   */
+  useEffect(() => {
+    chrome.storage.local.get([OVERLAY_PREFERENCES_KEY], (result) => {
+      if (result[OVERLAY_PREFERENCES_KEY]) {
+        setOverlayPreferences(result[OVERLAY_PREFERENCES_KEY]);
+      }
+    });
+  }, []);
+
+  /**
+   * Update overlay size and persist (T056)
+   */
+  const updateOverlaySize = useCallback((width: number, height: number) => {
+    setOverlayPreferences((prev) => {
+      const updated = { ...prev, width, height } as OverlayPreferences;
+      chrome.storage.local.set({ [OVERLAY_PREFERENCES_KEY]: updated });
+      return updated;
+    });
+  }, []);
+
+  /**
+   * Update overlay position and persist (T062)
+   */
+  const updateOverlayPosition = useCallback((x: number, y: number) => {
+    setOverlayPreferences((prev) => {
+      const updated = { ...prev, x, y } as OverlayPreferences;
+      chrome.storage.local.set({ [OVERLAY_PREFERENCES_KEY]: updated });
+      return updated;
+    });
+  }, []);
 
   /**
    * Start translation session
@@ -196,8 +241,11 @@ export function useTranslation(): UseTranslationReturn {
     translationState,
     error,
     isReconnecting,
+    overlayPreferences,
     startTranslation,
     stopTranslation,
     sendAudioChunk,
+    updateOverlaySize,
+    updateOverlayPosition,
   };
 }
