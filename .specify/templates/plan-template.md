@@ -31,7 +31,15 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Verify compliance with [Bable Fish Constitution](../.specify/memory/constitution.md):
+
+- [ ] **Simplicity & Readability**: Is the design simple and easy to understand? Are we avoiding unnecessary frameworks or complexity?
+- [ ] **Speed Over Accuracy**: Does the design prioritize fast response (<500ms latency)? Are we using streaming APIs for progressive results?
+- [ ] **Testing Strategy**: Have we planned for browser automation tests, real device testing, and performance benchmarks?
+- [ ] **Technology Stack**: Are we using approved technologies (Web Audio API, MediaStream API, ES2020+ JavaScript)?
+- [ ] **Performance Targets**: Does the design meet <500ms P50 latency, <50MB memory footprint, and <500KB bundle size?
+
+*If any check fails, document justification in Complexity Tracking section below.*
 
 ## Project Structure
 

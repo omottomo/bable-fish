@@ -7,10 +7,14 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import TranslationOverlay from './components/TranslationOverlay';
 import NotificationBanner from './components/NotificationBanner';
+import AdDisplay from './components/AdDisplay';
 import { useTranslation } from './hooks/useTranslation';
 import { useAudioCapture } from './hooks/useAudioCapture';
 import type { Language } from './types/translation.types';
 import './styles/tailwind.css';
+
+// Ad zone ID from environment or config
+const AD_ZONE_ID = process.env.PROPELLERADS_ZONE_ID || 'demo-zone-id';
 
 console.log('[Babel Fish Content] Content script loaded');
 
@@ -114,6 +118,15 @@ const TranslationApp: React.FC<{
         isVisible={isTranslating || isConnected}
         isFinal={translationState?.isFinal || false}
         onClose={handleClose}
+      />
+
+      {/* T049: Ad Display positioned to not overlap translation overlay */}
+      {/* Translation overlay is top-right, so ads go bottom-left to avoid overlap */}
+      <AdDisplay
+        zoneId={AD_ZONE_ID}
+        position="bottom-left"
+        onAdLoaded={() => console.log('[Babel Fish] Ad loaded successfully')}
+        onAdFailed={() => console.log('[Babel Fish] Ad failed to load (graceful degradation)')}
       />
 
       <NotificationBanner

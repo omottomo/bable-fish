@@ -1,50 +1,121 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+============================================================================
+SYNC IMPACT REPORT
+============================================================================
+Version Change: (new constitution) → 1.0.0
+Modified Principles: N/A (initial version)
+Added Sections:
+  - Core Principles (3 principles)
+  - Technology Stack
+  - Governance
+Removed Sections: N/A
+Templates Status:
+  - ✅ plan-template.md: Constitution Check section aligns with new principles
+  - ✅ spec-template.md: Requirements and user story structure supports principles
+  - ✅ tasks-template.md: Task organization supports testing and incremental delivery
+Follow-up TODOs:
+  - Define specific translation API/service in Technology Stack when selected
+  - Establish baseline performance benchmarks for latency targets
+============================================================================
+-->
+
+# Bable Fish Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Simplicity & Readability
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Code MUST be simple, clear, and easy to understand:
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+- Prefer vanilla JavaScript over complex frameworks
+- Use descriptive variable and function names that explain intent
+- Avoid clever one-liners; favor explicit, readable code
+- Keep functions small and focused on a single responsibility
+- Minimize dependencies; only add libraries when significantly beneficial
+- Comment complex audio processing or translation logic, but keep code self-documenting
+- YAGNI principle: implement only what is needed now, not what might be needed later
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+**Rationale**: Real-time audio translation is inherently complex. Simple, readable code enables faster debugging, easier maintenance, and quicker onboarding of contributors. When audio glitches or translation fails, clear code allows rapid diagnosis.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### II. Speed Over Accuracy (Response Latency Priority)
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+Translation results MUST be delivered quickly, even if initial accuracy is lower:
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- Target latency: Display translation result within 500ms of speech detection
+- Use streaming translation APIs that provide partial results
+- Prioritize fast language detection (even if confidence is lower initially)
+- Show progressive translation refinements rather than waiting for perfect results
+- Never block UI rendering waiting for perfect translation
+- Implement optimistic UI updates with correction mechanism
+- Cache common phrases and vocabulary for instant response
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+**Rationale**: In real-time conversation, a fast approximate translation maintains conversation flow better than a slow perfect one. Users can self-correct based on context, but delays break communication rhythm and user experience.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### III. Testing Strategy (Non-Negotiable)
+
+Browser automation and real device testing MUST be mandatory:
+
+- **Browser Automation**: Every audio pipeline component must have automated tests
+  - Use Playwright or Selenium for cross-browser testing
+  - Mock Web Audio API for unit tests
+  - Test audio input/output flow end-to-end
+- **Real Device Testing**: Test on actual devices before release
+  - Test on low-end devices (4GB RAM minimum target)
+  - Verify microphone permissions and audio capture on real hardware
+  - Test network degradation scenarios (offline, slow connection)
+- **Performance Benchmarks**: All changes must pass performance tests
+  - Latency measurements in CI pipeline
+  - Memory footprint monitoring
+  - Audio quality metrics (no artifacts, clear output)
+- **Manual QA**: Human verification of translation quality required for major releases
+
+**Rationale**: Audio and real-time systems cannot be fully validated through unit tests alone. Browser differences, device microphones, and actual network conditions significantly impact behavior. Real device testing catches issues that emulators miss.
+
+## Technology Stack
+
+The following technologies define the technical foundation for Bable Fish:
+
+**Core Requirements**:
+- **Browser APIs**: Web Audio API, MediaStream API for real-time audio capture and processing
+- **Translation**: Real-time translation API/service (specific provider to be determined based on requirements)
+- **Language**: JavaScript (ES2020+) for maximum browser compatibility
+- **Build**: Minimal build tooling; prefer native ES modules where possible
+
+**Approved Libraries** (minimal dependencies):
+- Audio processing utilities (only if native Web Audio API insufficient)
+- Translation SDK (for chosen provider integration)
+
+**Constraints**:
+- No server-side processing for audio data (privacy concern)
+- Must work in modern browsers (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
+- Total bundle size target: <500KB (excluding translation API SDK)
+- No eval(), no inline scripts (CSP compliance)
+
+**Performance Targets**:
+- Cold start to first translation: <2 seconds
+- Audio capture to translation display: <500ms (P50), <800ms (P95)
+- Memory footprint: <50MB for core application
+- Works on devices with 4GB RAM minimum
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+**Amendment Procedure**:
+- All constitution amendments MUST be approved by the project owner/maintainer
+- Proposed amendments require:
+  1. Written rationale explaining the change necessity
+  2. Impact analysis on existing code and principles
+  3. Migration plan if changes affect existing features
+- Version bump follows semantic versioning (see below)
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Versioning Policy**:
+- **MAJOR** version increment: Backward-incompatible principle removals or fundamental redefinitions
+- **MINOR** version increment: New principle added or material expansion of existing principle
+- **PATCH** version increment: Clarifications, wording improvements, typo fixes
+
+**Compliance Review**:
+- All feature specifications MUST reference applicable constitutional principles
+- All pull requests MUST verify compliance with constitution in review checklist
+- Constitution violations require explicit justification and approval
+- Complexity that violates Principle I (Simplicity) must be documented with "why needed" explanation
+
+**Version**: 1.0.0 | **Ratified**: 2025-12-03 | **Last Amended**: 2025-12-03
